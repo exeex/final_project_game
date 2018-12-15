@@ -6,10 +6,6 @@
 
 #IncludeRegexTransform: 
 
-C:/Users/xray0/CLionProjects/FinalPorject/character.cpp
-character.h
-C:/Users/xray0/CLionProjects/FinalPorject/character.h
-
 C:/Users/xray0/CLionProjects/FinalPorject/character.h
 allegro5/allegro.h
 -
@@ -31,6 +27,16 @@ allegro5/allegro_font.h
 -
 allegro5/allegro_ttf.h
 -
+character.h
+C:/Users/xray0/CLionProjects/FinalPorject/character.h
+view.h
+C:/Users/xray0/CLionProjects/FinalPorject/view.h
+
+C:/Users/xray0/CLionProjects/FinalPorject/view.cpp
+view.h
+C:/Users/xray0/CLionProjects/FinalPorject/view.h
+
+C:/Users/xray0/CLionProjects/FinalPorject/view.h
 character.h
 C:/Users/xray0/CLionProjects/FinalPorject/character.h
 
