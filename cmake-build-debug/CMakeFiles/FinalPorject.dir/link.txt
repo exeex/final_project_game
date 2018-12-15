@@ -1,3 +1,0 @@
-"C:\Program Files\CMake\bin\cmake.exe" -E remove -f CMakeFiles\FinalPorject.dir/objects.a
-C:\MinGW\bin\ar.exe cr CMakeFiles\FinalPorject.dir/objects.a @CMakeFiles\FinalPorject.dir\objects1.rsp
-C:\MinGW\bin\g++.exe  -std=c++11 -g   -Wl,--whole-archive CMakeFiles\FinalPorject.dir/objects.a -Wl,--no-whole-archive  -o FinalPorject.exe -Wl,--out-implib,libFinalPorject.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\FinalPorject.dir\linklibs.rsp
