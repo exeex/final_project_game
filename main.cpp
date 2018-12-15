@@ -8,6 +8,7 @@
 #include <allegro5/allegro_ttf.h>
 #include "character.h"
 #include "view.h"
+#include "config.h"
 
 #define GAME_TERMINATE -1
 
@@ -27,19 +28,14 @@ ALLEGRO_FONT *font = nullptr;
 
 //Custom Definition
 const char *title = "Final Project 106065703";
-const float FPS = 60;
-const int WIDTH = 400;
-const int HEIGHT = 600;
+
 
 View view;
+Character *player;
 
-int imageWidth = 0;
-int imageHeight = 0;
-int draw = 0;
-int done = 0;
+
 int window = 1;
 bool judge_next_window = false;
-bool dir = true; //true: left, false: right
 
 void show_err_msg(int msg);
 
@@ -138,13 +134,9 @@ int process_event() {
 
     // Our setting for controlling animation
     if (event.timer.source == timer) {
-        if (view.enemy->x < -150) dir = false;
-        else if (view.enemy->x > WIDTH + 50) dir = true;
 
-        if (dir) view.enemy->x -= 10;
-        else view.enemy->x += 10;
-
-        view.player->update_position();
+        view.update_position();
+//        player->update_position();
 
     }
 
@@ -155,19 +147,19 @@ int process_event() {
             // Control
             case ALLEGRO_KEY_UP:
             case ALLEGRO_KEY_W:
-                view.player->is_moving_up = 1;
+                player->is_moving_up = 1;
                 break;
             case ALLEGRO_KEY_DOWN:
             case ALLEGRO_KEY_S:
-                view.player->is_moving_down = 1;
+                player->is_moving_down = 1;
                 break;
             case ALLEGRO_KEY_LEFT:
             case ALLEGRO_KEY_A:
-                view.player->is_moving_left = 1;
+                player->is_moving_left = 1;
                 break;
             case ALLEGRO_KEY_RIGHT:
             case ALLEGRO_KEY_D:
-                view.player->is_moving_right = 1;
+                player->is_moving_right = 1;
                 break;
 
                 // For Start Menu
@@ -184,19 +176,19 @@ int process_event() {
             // Control
             case ALLEGRO_KEY_UP:
             case ALLEGRO_KEY_W:
-                view.player->is_moving_up = 0;
+                player->is_moving_up = 0;
                 break;
             case ALLEGRO_KEY_DOWN:
             case ALLEGRO_KEY_S:
-                view.player->is_moving_down = 0;
+                player->is_moving_down = 0;
                 break;
             case ALLEGRO_KEY_LEFT:
             case ALLEGRO_KEY_A:
-                view.player->is_moving_left = 0;
+                player->is_moving_left = 0;
                 break;
             case ALLEGRO_KEY_RIGHT:
             case ALLEGRO_KEY_D:
-                view.player->is_moving_right = 0;
+                player->is_moving_right = 0;
                 break;
             default:
                 break;
@@ -214,15 +206,16 @@ int process_event() {
 int game_run() {
     int error = 0;
     // First window(Menu)
-    if(window == 1){
+    if (window == 1) {
         if (!al_is_event_queue_empty(event_queue)) {
             error = process_event();
             if (judge_next_window) {
                 window = 2;
                 // Setting Character
-                view.backGround = new BackGround(0,0, al_load_bitmap("stage.jpg"));
-                view.player = new Character(WIDTH / 2, HEIGHT / 2 + 150, al_load_bitmap("tower.png"));
-                view.enemy = new Character(WIDTH /2, HEIGHT / 2 - 280, al_load_bitmap("teemo_left.png"));
+                view.backGround = new BackGround(0, 0, al_load_bitmap("stage.jpg"));
+                player = new Player(WIDTH / 2, HEIGHT / 2 + 150, al_load_bitmap("playerShip1_blue.png"));
+                view.players.push_back(player);
+                view.enemys.push_back(new Enemy(WIDTH / 2, HEIGHT / 2 - 280, al_load_bitmap("enemyRed3.png")));
 
                 //Initialize Timer
                 timer = al_create_timer(1.0 / 30.0);
@@ -240,7 +233,7 @@ int game_run() {
         // Second window(Main Game)
     else if (window == 2) {
         // Change Image for animation
-        view.backGround->plot();
+//        view.backGround->plot();
         view.plot();
 
         al_flip_display();

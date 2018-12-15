@@ -82,13 +82,22 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="C:/Users/xray0/CLionProjects/FinalPorject/Interface.h">
+			<Option target="FinalPorject"/>
+		</Unit>
 		<Unit filename="C:/Users/xray0/CLionProjects/FinalPorject/character.cpp">
 			<Option target="FinalPorject"/>
 		</Unit>
 		<Unit filename="C:/Users/xray0/CLionProjects/FinalPorject/character.h">
 			<Option target="FinalPorject"/>
 		</Unit>
+		<Unit filename="C:/Users/xray0/CLionProjects/FinalPorject/config.h">
+			<Option target="FinalPorject"/>
+		</Unit>
 		<Unit filename="C:/Users/xray0/CLionProjects/FinalPorject/main.cpp">
+			<Option target="FinalPorject"/>
+		</Unit>
+		<Unit filename="C:/Users/xray0/CLionProjects/FinalPorject/process_event.h">
 			<Option target="FinalPorject"/>
 		</Unit>
 		<Unit filename="C:/Users/xray0/CLionProjects/FinalPorject/view.cpp">
