@@ -12,37 +12,33 @@
 #include "../config.h"
 
 
-
 class Bullet : public Object {
 
 public:
-    Bullet(View* view, int x, int y, ALLEGRO_BITMAP *image_path): Object(view, x ,y, image_path){
-        move_speed_y = -30;
+    Bullet(View *view, int x, int y, ALLEGRO_BITMAP *image_path) : Object(view, x, y, image_path) {
+        y_speed = -30;
     }
 
-    void update_position() override{
-        x += move_speed_x;
-        y += move_speed_y;
-        move_speed_x += move_acc_x;
-        move_speed_y += move_acc_y;
+    void update_position() override {
+        x += x_speed;
+        y += y_speed;
+        x_speed += x_acc;
+        y += y_acc;
     }
-
 };
 
 
 class BackGround : public Object {
 
 public:
-    void update_position() override{
-        x += move_speed_x;
-        y += move_speed_y;
-        move_speed_x += move_acc_x;
-        move_speed_y += move_acc_y;
+    void update_position() override {
+        x += x_speed;
+        y += y_speed;
     }
-    BackGround(View* view, int x, int y, ALLEGRO_BITMAP *image_path) : Object(view, x ,y, image_path){}
+
+    BackGround(View *view, int x, int y, ALLEGRO_BITMAP *image_path) : Object(view, x, y, image_path) {}
 
 };
-
 
 
 class Character : public Object {
@@ -53,52 +49,69 @@ public:
     uint8_t is_moving_up = 0;
     uint8_t is_moving_down = 0;
 
-    int move_speed_x = 5;
-    int move_speed_y = 5;
+    int x_speed = 5;
+    int y_speed = 5;
 
-    Character(View* view, int x, int y, ALLEGRO_BITMAP *image_path) : Object(view, x, y, image_path) {
+    Character(View *view, int x, int y, ALLEGRO_BITMAP *bitmap) : Object(view, x, y, bitmap) {
         this->x = x;
         this->y = y;
-        this->image_path = image_path;
+        this->bitmap = bitmap;
     }
 
-    void update_position() override{
-        x += move_speed_x * (-1 * is_moving_left + is_moving_right);
-        y += move_speed_y * (-1 * is_moving_up + is_moving_down);
+    void update_position() override {
+        x += x_speed * (-1 * is_moving_left + is_moving_right);
+        y += y_speed * (-1 * is_moving_up + is_moving_down);
     }
-
 
 
 };
 
 
-class Player : public Character{
+class Player : public Character {
 public:
-    ALLEGRO_BITMAP* bullet_img;
-    Player(View* view, int x, int y, ALLEGRO_BITMAP *image_path) : Character(view, x, y, image_path) {
+    ALLEGRO_BITMAP *bullet_img;
+    int bullet_img_w;
+    int bullet_img_h;
+    uint8_t is_firing;
+    ALLEGRO_TIMER * fire_timer ;
+
+    Player(View *view, int x, int y, ALLEGRO_BITMAP *bitmap) : Character(view, x, y, bitmap) {
         this->x = x;
         this->y = y;
-        this->image_path = image_path;
+        this->bitmap = bitmap;
         bullet_img = al_load_bitmap("laserBlue01.png");
+        bullet_img_w = al_get_bitmap_width(bullet_img);
+        bullet_img_h = al_get_bitmap_height(bullet_img);
+        is_firing = 0;
+        fire_timer = al_create_timer(1.0/20.0);
     }
+//    void bind_event_queue(ALLEGRO_EVENT_QUEUE* event_queue){
+//        al_register_event_source(event_queue, al_get_timer_event_source(fire_timer));
+//    }
 
-    void fire(){
-        auto b = new Bullet(this->view,x,y, bullet_img);
+    void fire() {
+        int fire_pos_x = x+w/2-bullet_img_w/2;
+        int fire_pos_y = y+h/2-bullet_img_h/2;
+
+        auto b = new Bullet(this->view, fire_pos_x, fire_pos_y, bullet_img);
         view->add_bullet(b);
     }
+
+
 };
 
-class Enemy : public Character{
+class Enemy : public Character {
 public:
 
     bool dir = false;
-    Enemy(View* view, int x, int y, ALLEGRO_BITMAP *image_path) : Character(view, x, y, image_path) {
+
+    Enemy(View *view, int x, int y, ALLEGRO_BITMAP *bitmap) : Character(view, x, y, bitmap) {
         this->x = x;
         this->y = y;
-        this->image_path = image_path;
+        this->bitmap = bitmap;
     }
 
-    void update_position() override{
+    void update_position() override {
         if (x < -150) dir = false;
         else if (x > WIDTH + 50) dir = true;
 

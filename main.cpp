@@ -140,6 +140,9 @@ int process_event() {
 
     }
 
+    if ( event.timer.source == timer2 && player->is_firing == 1) {
+        player->fire();
+    }
 
     // Keyboard
     if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
@@ -163,7 +166,7 @@ int process_event() {
                 break;
 
             case ALLEGRO_KEY_COMMA:
-                player->fire();
+                player->is_firing = 1;
                 break;
 
                 // For Start Menu
@@ -194,6 +197,9 @@ int process_event() {
             case ALLEGRO_KEY_D:
                 player->is_moving_right = 0;
                 break;
+            case ALLEGRO_KEY_COMMA:
+                player->is_firing = 0;
+                break;
             default:
                 break;
 
@@ -217,17 +223,19 @@ int game_run() {
                 window = 2;
                 // Setting Character
                 view.backGround = new BackGround(&view, 0, 0, al_load_bitmap("stage.jpg"));
-                player = new Player(&view,WIDTH / 2, HEIGHT / 2 + 150, al_load_bitmap("playerShip1_blue.png"));
+                player = new Player(&view, WIDTH / 2, HEIGHT / 2 + 150, al_load_bitmap("playerShip1_blue.png"));
                 view.players.push_back(player);
-                view.enemys.push_back(new Enemy(&view,WIDTH / 2, HEIGHT / 2 - 280, al_load_bitmap("enemyRed3.png")));
+                view.enemys.push_back(new Enemy(&view, WIDTH / 2, HEIGHT / 2 - 280, al_load_bitmap("enemyRed3.png")));
 
                 //Initialize Timer
                 timer = al_create_timer(1.0 / 30.0);
-                timer2 = al_create_timer(1.0);
+                timer2 = player->fire_timer;
                 timer3 = al_create_timer(1.0 / 10.0);
+
                 al_register_event_source(event_queue, al_get_timer_event_source(timer));
                 al_register_event_source(event_queue, al_get_timer_event_source(timer2));
                 al_register_event_source(event_queue, al_get_timer_event_source(timer3));
+
                 al_start_timer(timer);
                 al_start_timer(timer2);
                 al_start_timer(timer3);

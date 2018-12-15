@@ -8,9 +8,9 @@
 
 void View::plot() {
     backGround->plot();
-    for(int i=0; i<players.size(); i++) players[i]->plot();
-    for(int i=0; i<enemys.size(); i++) enemys[i]->plot();
     for(int i=0; i<bullets.size(); i++) bullets[i]->plot();
+    for(int i=0; i<enemys.size(); i++) enemys[i]->plot();
+    for(int i=0; i<players.size(); i++) players[i]->plot();
 }
 
 void View::update_position(){

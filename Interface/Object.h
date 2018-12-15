@@ -14,14 +14,16 @@ public:
     View* view;
     int x;
     int y;
-    int move_speed_x = 0;
-    int move_speed_y = 0;
-    int move_acc_x = 0;
-    int move_acc_y = 0;
+    int w;
+    int h;
+    int x_speed = 0;
+    int y_speed = 0;
+    int x_acc = 0;
+    int y_acc = 0;
 
-    ALLEGRO_BITMAP *image_path;
+    ALLEGRO_BITMAP *bitmap;
 
-    Object(View* view, int x, int y, ALLEGRO_BITMAP *image_path);
+    Object(View* view, int x, int y, ALLEGRO_BITMAP *bitmap);
     virtual void plot();
     virtual void update_position() = 0;
 };
