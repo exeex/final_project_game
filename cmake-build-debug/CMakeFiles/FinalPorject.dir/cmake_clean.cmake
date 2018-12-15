@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/FinalPorject.dir/main.cpp.obj"
   "CMakeFiles/FinalPorject.dir/character.cpp.obj"
+  "CMakeFiles/FinalPorject.dir/view.cpp.obj"
   "FinalPorject.pdb"
   "FinalPorject.exe"
   "FinalPorject.exe.manifest"

@@ -91,6 +91,12 @@
 		<Unit filename="C:/Users/xray0/CLionProjects/FinalPorject/main.cpp">
 			<Option target="FinalPorject"/>
 		</Unit>
+		<Unit filename="C:/Users/xray0/CLionProjects/FinalPorject/view.cpp">
+			<Option target="FinalPorject"/>
+		</Unit>
+		<Unit filename="C:/Users/xray0/CLionProjects/FinalPorject/view.h">
+			<Option target="FinalPorject"/>
+		</Unit>
 		<Unit filename="C:/Users/xray0/CLionProjects/FinalPorject/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

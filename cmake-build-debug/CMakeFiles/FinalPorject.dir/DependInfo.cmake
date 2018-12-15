@@ -6,6 +6,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_CXX
   "C:/Users/xray0/CLionProjects/FinalPorject/character.cpp" "C:/Users/xray0/CLionProjects/FinalPorject/cmake-build-debug/CMakeFiles/FinalPorject.dir/character.cpp.obj"
   "C:/Users/xray0/CLionProjects/FinalPorject/main.cpp" "C:/Users/xray0/CLionProjects/FinalPorject/cmake-build-debug/CMakeFiles/FinalPorject.dir/main.cpp.obj"
+  "C:/Users/xray0/CLionProjects/FinalPorject/view.cpp" "C:/Users/xray0/CLionProjects/FinalPorject/cmake-build-debug/CMakeFiles/FinalPorject.dir/view.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

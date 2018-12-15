@@ -176,6 +176,33 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles\FinalPorject.dir\build.make CMakeFiles/FinalPorject.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+view.obj: view.cpp.obj
+
+.PHONY : view.obj
+
+# target to build an object file
+view.cpp.obj:
+	$(MAKE) -f CMakeFiles\FinalPorject.dir\build.make CMakeFiles/FinalPorject.dir/view.cpp.obj
+.PHONY : view.cpp.obj
+
+view.i: view.cpp.i
+
+.PHONY : view.i
+
+# target to preprocess a source file
+view.cpp.i:
+	$(MAKE) -f CMakeFiles\FinalPorject.dir\build.make CMakeFiles/FinalPorject.dir/view.cpp.i
+.PHONY : view.cpp.i
+
+view.s: view.cpp.s
+
+.PHONY : view.s
+
+# target to generate assembly for a file
+view.cpp.s:
+	$(MAKE) -f CMakeFiles\FinalPorject.dir\build.make CMakeFiles/FinalPorject.dir/view.cpp.s
+.PHONY : view.cpp.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -191,6 +218,9 @@ help:
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
+	@echo ... view.obj
+	@echo ... view.i
+	@echo ... view.s
 .PHONY : help
 
 

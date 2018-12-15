@@ -11,24 +11,25 @@
 #define GAME_TERMINATE -1
 
 // ALLEGRO Variables
-ALLEGRO_DISPLAY* display = NULL;
-ALLEGRO_EVENT_QUEUE *event_queue = NULL;
-ALLEGRO_BITMAP *image = NULL;
-ALLEGRO_BITMAP *image2 = NULL;
-ALLEGRO_BITMAP *image3 = NULL;
-ALLEGRO_BITMAP *background = NULL;
+ALLEGRO_DISPLAY* display = nullptr;
+ALLEGRO_EVENT_QUEUE *event_queue = nullptr;
+ALLEGRO_BITMAP *image = nullptr;
+ALLEGRO_BITMAP *image2 = nullptr;
+ALLEGRO_BITMAP *image3 = nullptr;
+ALLEGRO_BITMAP *background = nullptr;
 ALLEGRO_KEYBOARD_STATE keyState ;
-ALLEGRO_TIMER *timer = NULL;
-ALLEGRO_TIMER *timer2 = NULL;
-ALLEGRO_TIMER *timer3 = NULL;
-ALLEGRO_SAMPLE *song=NULL;
-ALLEGRO_FONT *font = NULL;
+ALLEGRO_TIMER *timer = nullptr;
+ALLEGRO_TIMER *timer2 = nullptr;
+ALLEGRO_TIMER *timer3 = nullptr;
+ALLEGRO_SAMPLE *song=nullptr;
+ALLEGRO_FONT *font = nullptr;
 
 //Custom Definition
 const char *title = "Final Project 106065703";
 const float FPS = 60;
 const int WIDTH = 400;
 const int HEIGHT = 600;
+
 
 Character character1;
 Character character2;
@@ -90,7 +91,7 @@ void game_init() {
     // Create display
     display = al_create_display(WIDTH, HEIGHT);
     event_queue = al_create_event_queue();
-    if (display == NULL || event_queue == NULL) {
+    if (display == nullptr || event_queue == nullptr) {
         show_err_msg(-1);
     }
     // Initialize Allegro settings
@@ -117,7 +118,7 @@ void game_begin() {
         show_err_msg(-1);
     }
     // Loop the song until the display closes
-    al_play_sample(song, 1.0, 0.0,1.0,ALLEGRO_PLAYMODE_LOOP,NULL);
+    al_play_sample(song, 1.0, 0.0,1.0,ALLEGRO_PLAYMODE_LOOP,nullptr);
     al_clear_to_color(al_map_rgb(100,100,100));
     // Load and draw text
     font = al_load_ttf_font("pirulen.ttf",12,0);
@@ -139,21 +140,7 @@ int process_event(){
         if(dir) character2.x -= 10;
         else character2.x += 10;
 
-        int dx=0, dy=0;
-        if(character1.is_moving_down){
-            dy += character1.move_speed;
-        }
-        if(character1.is_moving_up){
-            dy -= character1.move_speed;
-        }
-        if(character1.is_moving_right){
-            dx += character1.move_speed;
-        }
-        if(character1.is_moving_left){
-            dx -= character1.move_speed;
-        }
-        character1.x += dx;
-        character1.y += dy;
+        character1.update_position();
 
     }
 
@@ -166,24 +153,26 @@ int process_event(){
             // Control
             case ALLEGRO_KEY_UP:
             case ALLEGRO_KEY_W:
-                character1.is_moving_up = true;
+                character1.is_moving_up = 1;
                 break;
             case ALLEGRO_KEY_DOWN:
             case ALLEGRO_KEY_S:
-                character1.is_moving_down = true;
+                character1.is_moving_down = 1;
                 break;
             case ALLEGRO_KEY_LEFT:
             case ALLEGRO_KEY_A:
-                character1.is_moving_left = true;
+                character1.is_moving_left = 1;
                 break;
             case ALLEGRO_KEY_RIGHT:
             case ALLEGRO_KEY_D:
-                character1.is_moving_right = true;
+                character1.is_moving_right = 1;
                 break;
 
             // For Start Menu
             case ALLEGRO_KEY_ENTER:
                 judge_next_window = true;
+                break;
+            default:
                 break;
         }
     }
@@ -193,19 +182,21 @@ int process_event(){
             // Control
             case ALLEGRO_KEY_UP:
             case ALLEGRO_KEY_W:
-                character1.is_moving_up = false;
+                character1.is_moving_up = 0;
                 break;
             case ALLEGRO_KEY_DOWN:
             case ALLEGRO_KEY_S:
-                character1.is_moving_down = false;
+                character1.is_moving_down = 0;
                 break;
             case ALLEGRO_KEY_LEFT:
             case ALLEGRO_KEY_A:
-                character1.is_moving_left = false;
+                character1.is_moving_left = 0;
                 break;
             case ALLEGRO_KEY_RIGHT:
             case ALLEGRO_KEY_D:
-                character1.is_moving_right = false;
+                character1.is_moving_right = 0;
+                break;
+            default:
                 break;
 
         }
