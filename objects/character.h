@@ -7,6 +7,7 @@
 #define FINALPORJECT_CHARACTER_H
 
 #include <allegro5/allegro.h>
+#include <cstdio>
 #include "../Interface/View.h"
 #include "../Interface/Object.h"
 #include "../config.h"
@@ -15,15 +16,32 @@
 class Bullet : public Object {
 
 public:
-    Bullet(View *view, int x, int y, ALLEGRO_BITMAP *image_path) : Object(view, x, y, image_path) {
+    Bullet(View *view, int x, int y, ALLEGRO_BITMAP *bitmap) : Object(view, x, y, bitmap) {
         y_speed = -30;
+    }
+
+    ~Bullet() {
+        fprintf(stdout, "unexpected msg: gg!! \n");
+    }
+
+    bool is_out_of_boundary(int x, int y, int w, int h) {
+
+        if (x < -w || x > WIDTH || y < -h || y > HEIGHT) {
+
+
+            return true;
+        } else return false;
+
     }
 
     void update_position() override {
         x += x_speed;
         y += y_speed;
         x_speed += x_acc;
-        y += y_acc;
+        y_speed += y_acc;
+
+        if (is_out_of_boundary(x, y, w, h)) this->is_garbage = true;
+
     }
 };
 
@@ -73,7 +91,7 @@ public:
     int bullet_img_w;
     int bullet_img_h;
     uint8_t is_firing;
-    ALLEGRO_TIMER * fire_timer ;
+    ALLEGRO_TIMER *fire_timer;
 
     Player(View *view, int x, int y, ALLEGRO_BITMAP *bitmap) : Character(view, x, y, bitmap) {
         this->x = x;
@@ -83,15 +101,15 @@ public:
         bullet_img_w = al_get_bitmap_width(bullet_img);
         bullet_img_h = al_get_bitmap_height(bullet_img);
         is_firing = 0;
-        fire_timer = al_create_timer(1.0/20.0);
+        fire_timer = al_create_timer(1.0 / 20.0);
     }
 //    void bind_event_queue(ALLEGRO_EVENT_QUEUE* event_queue){
 //        al_register_event_source(event_queue, al_get_timer_event_source(fire_timer));
 //    }
 
     void fire() {
-        int fire_pos_x = x+w/2-bullet_img_w/2;
-        int fire_pos_y = y+h/2-bullet_img_h/2;
+        int fire_pos_x = x + w / 2 - bullet_img_w / 2;
+        int fire_pos_y = y + h / 2 - bullet_img_h / 2;
 
         auto b = new Bullet(this->view, fire_pos_x, fire_pos_y, bullet_img);
         view->add_bullet(b);

@@ -134,14 +134,15 @@ int process_event() {
 
     // Our setting for controlling animation
     if (event.timer.source == timer) {
-
         view.update_position();
-//        player->update_position();
-
     }
 
     if ( event.timer.source == timer2 && player->is_firing == 1) {
         player->fire();
+    }
+
+    if ( event.timer.source == timer3 && player->is_firing == 1) {
+        view.collect_garbage();
     }
 
     // Keyboard

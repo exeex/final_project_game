@@ -6,6 +6,7 @@
 #define FINALPORJECT_VIEW_H
 
 #include <vector>
+#include <list>
 
 class Object;
 
@@ -13,12 +14,13 @@ class View{
 
 public:
     Object* backGround;
-    std::vector<Object*> players;
-    std::vector<Object*> enemys;
-    std::vector<Object*> bullets;
+    std::list<Object*> players;
+    std::list<Object*> enemys;
+    std::list<Object*> bullets;
 
     void plot();
     void update_position();
+    void collect_garbage();
     void add_bullet(Object* bullet);
 
 };

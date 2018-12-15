@@ -20,6 +20,7 @@ public:
     int y_speed = 0;
     int x_acc = 0;
     int y_acc = 0;
+    bool is_garbage = false;
 
     ALLEGRO_BITMAP *bitmap;
 
