@@ -6,8 +6,8 @@
 #include <allegro5/allegro_acodec.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
-#include "character.h"
-#include "View.h"
+#include "objects/character.h"
+#include "Interface/View.h"
 #include "config.h"
 
 #define GAME_TERMINATE -1

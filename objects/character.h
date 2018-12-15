@@ -7,9 +7,9 @@
 #define FINALPORJECT_CHARACTER_H
 
 #include <allegro5/allegro.h>
-#include "View.h"
-#include "Object.h"
-#include "config.h"
+#include "../Interface/View.h"
+#include "../Interface/Object.h"
+#include "../config.h"
 
 
 
