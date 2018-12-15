@@ -7,35 +7,18 @@
 #define FINALPORJECT_CHARACTER_H
 
 #include <allegro5/allegro.h>
-#include "Interface.h"
+#include "View.h"
+#include "Object.h"
 #include "config.h"
 
-//class character {
-//
-//};
 
-//class ObjectInterface {
-//
-//public:
-//    int x;
-//    int y;
-//    int move_speed_x = 0;
-//    int move_speed_y = 0;
-//    int move_acc_x = 0;
-//    int move_acc_y = 0;
-//    ALLEGRO_BITMAP *image_path;
-//
-//    ObjectInterface(int x, int y, ALLEGRO_BITMAP *image_path){
-//        this->x = x;
-//        this->y = y;
-//        this->image_path = image_path;
-//    }
-//    void plot() {
-//        al_draw_bitmap(image_path, x, y, 0);
-//    }
-//};
 
-class Bullet : public ObjectInterface {
+class Bullet : public Object {
+
+public:
+    Bullet(View* view, int x, int y, ALLEGRO_BITMAP *image_path): Object(view, x ,y, image_path){
+        move_speed_y = -30;
+    }
 
     void update_position() override{
         x += move_speed_x;
@@ -47,7 +30,7 @@ class Bullet : public ObjectInterface {
 };
 
 
-class BackGround : public ObjectInterface {
+class BackGround : public Object {
 
 public:
     void update_position() override{
@@ -56,13 +39,13 @@ public:
         move_speed_x += move_acc_x;
         move_speed_y += move_acc_y;
     }
-    BackGround(int x, int y, ALLEGRO_BITMAP *image_path) : ObjectInterface(x ,y, image_path){}
+    BackGround(View* view, int x, int y, ALLEGRO_BITMAP *image_path) : Object(view, x ,y, image_path){}
 
 };
 
 
 
-class Character : public ObjectInterface {
+class Character : public Object {
 
 public:
     uint8_t is_moving_left = 0;
@@ -73,9 +56,7 @@ public:
     int move_speed_x = 5;
     int move_speed_y = 5;
 
-    Character() : ObjectInterface(0, 0, nullptr) {};
-
-    Character(int x, int y, ALLEGRO_BITMAP *image_path) : ObjectInterface(x, y, image_path) {
+    Character(View* view, int x, int y, ALLEGRO_BITMAP *image_path) : Object(view, x, y, image_path) {
         this->x = x;
         this->y = y;
         this->image_path = image_path;
@@ -86,15 +67,24 @@ public:
         y += move_speed_y * (-1 * is_moving_up + is_moving_down);
     }
 
+
+
 };
 
 
 class Player : public Character{
 public:
-    Player(int x, int y, ALLEGRO_BITMAP *image_path) : Character(x, y, image_path) {
+    ALLEGRO_BITMAP* bullet_img;
+    Player(View* view, int x, int y, ALLEGRO_BITMAP *image_path) : Character(view, x, y, image_path) {
         this->x = x;
         this->y = y;
         this->image_path = image_path;
+        bullet_img = al_load_bitmap("laserBlue01.png");
+    }
+
+    void fire(){
+        auto b = new Bullet(this->view,x,y, bullet_img);
+        view->add_bullet(b);
     }
 };
 
@@ -102,7 +92,7 @@ class Enemy : public Character{
 public:
 
     bool dir = false;
-    Enemy(int x, int y, ALLEGRO_BITMAP *image_path) : Character(x, y, image_path) {
+    Enemy(View* view, int x, int y, ALLEGRO_BITMAP *image_path) : Character(view, x, y, image_path) {
         this->x = x;
         this->y = y;
         this->image_path = image_path;

@@ -7,7 +7,7 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 #include "character.h"
-#include "view.h"
+#include "View.h"
 #include "config.h"
 
 #define GAME_TERMINATE -1
@@ -31,7 +31,7 @@ const char *title = "Final Project 106065703";
 
 
 View view;
-Character *player;
+Player *player;
 
 
 int window = 1;
@@ -162,6 +162,10 @@ int process_event() {
                 player->is_moving_right = 1;
                 break;
 
+            case ALLEGRO_KEY_COMMA:
+                player->fire();
+                break;
+
                 // For Start Menu
             case ALLEGRO_KEY_ENTER:
                 judge_next_window = true;
@@ -212,10 +216,10 @@ int game_run() {
             if (judge_next_window) {
                 window = 2;
                 // Setting Character
-                view.backGround = new BackGround(0, 0, al_load_bitmap("stage.jpg"));
-                player = new Player(WIDTH / 2, HEIGHT / 2 + 150, al_load_bitmap("playerShip1_blue.png"));
+                view.backGround = new BackGround(&view, 0, 0, al_load_bitmap("stage.jpg"));
+                player = new Player(&view,WIDTH / 2, HEIGHT / 2 + 150, al_load_bitmap("playerShip1_blue.png"));
                 view.players.push_back(player);
-                view.enemys.push_back(new Enemy(WIDTH / 2, HEIGHT / 2 - 280, al_load_bitmap("enemyRed3.png")));
+                view.enemys.push_back(new Enemy(&view,WIDTH / 2, HEIGHT / 2 - 280, al_load_bitmap("enemyRed3.png")));
 
                 //Initialize Timer
                 timer = al_create_timer(1.0 / 30.0);
