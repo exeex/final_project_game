@@ -17,11 +17,11 @@ class Bullet : public Object {
 
 public:
     Bullet(View *view, int x, int y, ALLEGRO_BITMAP *bitmap) : Object(view, x, y, bitmap) {
-        y_speed = -30;
+        y_speed = -1;
     }
 
     ~Bullet() override {
-        fprintf(stdout, "unexpected msg: gg!! \n");
+//        fprintf(stdout, "unexpected msg: gg!! \n");
     }
 
     bool is_out_of_boundary(int x, int y, int w, int h) {
@@ -32,6 +32,11 @@ public:
             return true;
         } else return false;
 
+    }
+
+    void plot() override{
+        if (this->is_garbage) return;
+        else al_draw_bitmap(bitmap, x-w/2, y, 0);
     }
 
     void update_position() override {
@@ -79,6 +84,11 @@ public:
 
     ~Character() override = default;
 
+    void plot() override{
+        if (this->is_garbage) return;
+        else al_draw_bitmap(bitmap, x-w/2, y-w/2, 0);
+    }
+
     void update_position() override {
         x += x_speed * (-1 * is_moving_left + is_moving_right);
         y += y_speed * (-1 * is_moving_up + is_moving_down);
@@ -116,8 +126,8 @@ public:
     ~Player() override = default;
 
     void fire() {
-        int fire_pos_x = x + w / 2 - bullet_img_w / 2;
-        int fire_pos_y = y + h / 2 - bullet_img_h / 2;
+        int fire_pos_x = x;
+        int fire_pos_y = y - bullet_img_h / 2;
 
         auto b = new Bullet(this->view, fire_pos_x, fire_pos_y, bullet_img);
         view->add_bullet(b);
@@ -134,21 +144,23 @@ public:
     Enemy(View *view, int x, int y, ALLEGRO_BITMAP *bitmap) : Character(view, x, y, bitmap) {
         this->x = x;
         this->y = y;
-        this->collision_radius = 10.0;
+        this->collision_radius = 20.0;
         this->bitmap = bitmap;
+        x_speed = 0;
+        y_speed = 0;
     }
 
     void update_position() override {
         if (x < -150) dir = false;
         else if (x > WIDTH + 50) dir = true;
-
-        if (dir) x -= 10;
-        else x += 10;
+        if (dir) x -= x_speed;
+        else x += x_speed;
 
     }
 
     void hit(Bullet* b) override{
-        this->is_garbage = true ;
+//        this->is_garbage = true ;
+        printf("hit!");
         b->is_garbage = true ;
     }
 

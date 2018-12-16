@@ -35,7 +35,7 @@ void View::update_position() {
     for (it = enemys.begin(); it != enemys.end(); it++) (*it)->update_position();
     for (it = players.begin(); it != players.end(); it++) (*it)->update_position();
 
-    printf("%d \n", bullets.size());
+//    printf("%d \n", bullets.size());
 }
 
 void View::collect_garbage() {
@@ -61,9 +61,9 @@ void View::check_hit() {
             int dx = enemy_->x - bullet_->x;
             int dy = enemy_->y - bullet_->y;
             float er = enemy_->collision_radius;
-            float br = enemy_->collision_radius;
+            float br = bullet_->collision_radius;
 
-            double distance = sqrt(dx^2+dy^2);
+            double distance = sqrt(pow(dx,2)+pow(dy,2));
 
             if(distance<er+br)enemy_->hit(bullet_) ;
         }

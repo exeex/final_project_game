@@ -227,7 +227,7 @@ int game_run() {
                 view.backGround = new BackGround(&view, 0, 0, al_load_bitmap("stage.jpg"));
                 player = new Player(&view, WIDTH / 2, HEIGHT / 2 + 150, al_load_bitmap("playerShip1_blue.png"));
                 view.players.push_back(player);
-                view.enemys.push_back(new Enemy(&view, WIDTH / 2, HEIGHT / 2 - 280, al_load_bitmap("enemyRed3.png")));
+                view.enemys.push_back(new Enemy(&view, WIDTH / 2, HEIGHT / 2 - 180, al_load_bitmap("enemyRed3.png")));
 
                 //Initialize Timer
                 timer = al_create_timer(1.0 / 30.0);
