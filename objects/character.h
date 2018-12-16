@@ -20,7 +20,7 @@ public:
         y_speed = -30;
     }
 
-    ~Bullet() override{
+    ~Bullet() override {
         fprintf(stdout, "unexpected msg: gg!! \n");
     }
 
@@ -55,6 +55,7 @@ public:
     }
 
     BackGround(View *view, int x, int y, ALLEGRO_BITMAP *image_path) : Object(view, x, y, image_path) {}
+
     ~BackGround() override = default;
 };
 
@@ -75,11 +76,15 @@ public:
         this->y = y;
         this->bitmap = bitmap;
     }
-    ~Character() override  = default;
+
+    ~Character() override = default;
 
     void update_position() override {
         x += x_speed * (-1 * is_moving_left + is_moving_right);
         y += y_speed * (-1 * is_moving_up + is_moving_down);
+    }
+
+    virtual void hit(Bullet *) {
     }
 
 
@@ -108,7 +113,7 @@ public:
 //        al_register_event_source(event_queue, al_get_timer_event_source(fire_timer));
 //    }
 
-    ~Player() override  = default;
+    ~Player() override = default;
 
     void fire() {
         int fire_pos_x = x + w / 2 - bullet_img_w / 2;
@@ -129,6 +134,7 @@ public:
     Enemy(View *view, int x, int y, ALLEGRO_BITMAP *bitmap) : Character(view, x, y, bitmap) {
         this->x = x;
         this->y = y;
+        this->collision_radius = 10.0;
         this->bitmap = bitmap;
     }
 
@@ -141,8 +147,13 @@ public:
 
     }
 
+    void hit(Bullet* b) override{
+        this->is_garbage = true ;
+        b->is_garbage = true ;
+    }
 
-    ~Enemy() override  = default;
+
+    ~Enemy() override = default;
 
 };
 

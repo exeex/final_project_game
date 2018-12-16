@@ -22,6 +22,7 @@ public:
     void update_position();
     void collect_garbage();
     void add_bullet(Object* bullet);
+    void check_hit();
 
 };
 

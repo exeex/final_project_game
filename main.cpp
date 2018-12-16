@@ -142,6 +142,7 @@ int process_event() {
     }
 
     if ( event.timer.source == timer3) {
+        view.check_hit();
         view.collect_garbage();
     }
 

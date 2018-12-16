@@ -4,8 +4,10 @@
 
 #include "View.h"
 #include "Object.h"
+#include "../objects/character.h"
 #include <list>
 #include <cstdio>
+#include <cmath>
 
 
 bool is_garbage(Object *object)
@@ -14,6 +16,7 @@ bool is_garbage(Object *object)
         delete(object);
         return true;
     }
+    return false;
 }
 
 void View::plot() {
@@ -41,9 +44,29 @@ void View::collect_garbage() {
     enemys.remove_if(is_garbage);
     players.remove_if(is_garbage);
 
-
 }
 
 void View::add_bullet(Object *bullet) {
     bullets.push_back(bullet);
+}
+
+void View::check_hit() {
+
+    std::list<Object *>::iterator bullet, enemy;
+    for (bullet = bullets.begin(); bullet != bullets.end(); bullet++){
+        for (enemy = enemys.begin(); enemy != enemys.end(); enemy++){
+            auto bullet_ = dynamic_cast<Bullet*>(*bullet);
+            auto enemy_ = dynamic_cast<Enemy*>(*enemy);
+
+            int dx = enemy_->x - bullet_->x;
+            int dy = enemy_->y - bullet_->y;
+            float er = enemy_->collision_radius;
+            float br = enemy_->collision_radius;
+
+            double distance = sqrt(dx^2+dy^2);
+
+            if(distance<er+br)enemy_->hit(bullet_) ;
+        }
+    }
+
 }
