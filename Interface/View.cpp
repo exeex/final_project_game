@@ -5,11 +5,15 @@
 #include "View.h"
 #include "Object.h"
 #include <list>
+#include <cstdio>
 
 
 bool is_garbage(Object *object)
 {
-    return object->is_garbage != 0;
+    if(object->is_garbage!=0){
+        delete(object);
+        return true;
+    }
 }
 
 void View::plot() {
@@ -27,6 +31,8 @@ void View::update_position() {
     for (it = bullets.begin(); it != bullets.end(); it++) (*it)->update_position();
     for (it = enemys.begin(); it != enemys.end(); it++) (*it)->update_position();
     for (it = players.begin(); it != players.end(); it++) (*it)->update_position();
+
+    printf("%d \n", bullets.size());
 }
 
 void View::collect_garbage() {
@@ -34,6 +40,7 @@ void View::collect_garbage() {
     bullets.remove_if(is_garbage);
     enemys.remove_if(is_garbage);
     players.remove_if(is_garbage);
+
 
 }
 

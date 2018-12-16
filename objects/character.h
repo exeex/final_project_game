@@ -20,7 +20,7 @@ public:
         y_speed = -30;
     }
 
-    ~Bullet() {
+    ~Bullet() override{
         fprintf(stdout, "unexpected msg: gg!! \n");
     }
 
@@ -55,7 +55,7 @@ public:
     }
 
     BackGround(View *view, int x, int y, ALLEGRO_BITMAP *image_path) : Object(view, x, y, image_path) {}
-
+    ~BackGround() override = default;
 };
 
 
@@ -75,6 +75,7 @@ public:
         this->y = y;
         this->bitmap = bitmap;
     }
+    ~Character() override  = default;
 
     void update_position() override {
         x += x_speed * (-1 * is_moving_left + is_moving_right);
@@ -107,6 +108,8 @@ public:
 //        al_register_event_source(event_queue, al_get_timer_event_source(fire_timer));
 //    }
 
+    ~Player() override  = default;
+
     void fire() {
         int fire_pos_x = x + w / 2 - bullet_img_w / 2;
         int fire_pos_y = y + h / 2 - bullet_img_h / 2;
@@ -137,6 +140,9 @@ public:
         else x += 10;
 
     }
+
+
+    ~Enemy() override  = default;
 
 };
 

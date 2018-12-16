@@ -141,7 +141,7 @@ int process_event() {
         player->fire();
     }
 
-    if ( event.timer.source == timer3 && player->is_firing == 1) {
+    if ( event.timer.source == timer3) {
         view.collect_garbage();
     }
 

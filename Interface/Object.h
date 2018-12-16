@@ -27,6 +27,7 @@ public:
     Object(View* view, int x, int y, ALLEGRO_BITMAP *bitmap);
     virtual void plot();
     virtual void update_position() = 0;
+    virtual ~Object();
 };
 
 
