@@ -122,7 +122,7 @@ public:
         this->x = x;
         this->y = y;
         this->bitmap = bitmap;
-        bullet_img = al_load_bitmap("laserBlue01.png");
+        bullet_img = al_load_bitmap("img/bullet/laserBlue01.png");
         bullet_img_w = al_get_bitmap_width(bullet_img);
         bullet_img_h = al_get_bitmap_height(bullet_img);
         is_firing = 0;

@@ -111,7 +111,7 @@ void game_init() {
 
 void game_begin() {
     // Load sound
-    song = al_load_sample("hello.wav");
+    song = al_load_sample("aud/hello.wav");
     if (!song) {
         printf("Audio clip sample not loaded!\n");
         show_err_msg(-1);
@@ -120,7 +120,7 @@ void game_begin() {
     al_play_sample(song, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, nullptr);
     al_clear_to_color(al_map_rgb(100, 100, 100));
     // Load and draw text
-    font = al_load_ttf_font("pirulen.ttf", 12, 0);
+    font = al_load_ttf_font("font/pirulen.ttf", 30, 0);
     al_draw_text(font, al_map_rgb(255, 255, 255), WIDTH / 2, HEIGHT / 2 + 220, ALLEGRO_ALIGN_CENTRE,
                  "Press 'Enter' to start");
     al_draw_rectangle(WIDTH / 2 - 150, 510, WIDTH / 2 + 150, 550, al_map_rgb(255, 255, 255), 0);
@@ -227,10 +227,10 @@ int game_run() {
             if (judge_next_window) {
                 window = 2;
                 // Setting Character
-                view.backGround = new BackGround(&view, 0, 0, al_load_bitmap("stage.jpg"));
-                player = new Player(&view, WIDTH / 2, HEIGHT / 2 + 150, al_load_bitmap("playerShip1_blue.png"));
+                view.backGround = new BackGround(&view, 0, 0, al_load_bitmap("./img/background/stage.jpg"));
+                player = new Player(&view, WIDTH / 2, HEIGHT / 2 + 150, al_load_bitmap("./img/player/playerShip1_blue.png"));
                 view.players.push_back(player);
-                view.enemys.push_back(new Enemy(&view, WIDTH / 2, HEIGHT / 2 - 180, al_load_bitmap("enemyRed3.png")));
+                view.enemys.push_back(new Enemy(&view, WIDTH / 2, HEIGHT / 2 - 180, al_load_bitmap("./img/enemy/enemyRed3.png")));
 
                 //Initialize Timer
                 timer = al_create_timer(1.0 / 30.0);
