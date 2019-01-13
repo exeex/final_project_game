@@ -30,7 +30,7 @@ public:
 
     bool is_out_of_boundary(int x, int y, int w, int h) {
 
-        if (x < -w || x > WIDTH || y < -h || y > HEIGHT) {
+        if (x < -w || x > SCREEN_WIDTH || y < -h || y > SCREEN_HEIGHT) {
 
 
             return true;
@@ -70,6 +70,13 @@ public:
     }
 
     ~BackGround() override = default;
+
+
+    void plot() override {
+
+        al_draw_bitmap(bitmap, x, y%SCREEN_HEIGHT-h, 0);
+        al_draw_bitmap(bitmap, x, y%SCREEN_HEIGHT, 0);
+    }
 };
 
 
@@ -95,7 +102,9 @@ public:
 
     void plot() override{
         if (this->is_garbage) return;
-        else al_draw_bitmap(bitmap, x-w/2, y-w/2, 0);
+        else {
+            al_draw_bitmap(bitmap, x-w/2, y-w/2, 0);
+        }
     }
 
     void update_position() override {
@@ -161,7 +170,7 @@ public:
 
     void update_position() override {
         if (x < -150) dir = false;
-        else if (x > WIDTH + 50) dir = true;
+        else if (x > SCREEN_WIDTH + 50) dir = true;
         if (dir) x -= x_speed;
         else x += x_speed;
 

@@ -88,7 +88,7 @@ void game_init() {
         show_err_msg(-1);
     }
     // Create display
-    display = al_create_display(WIDTH, HEIGHT);
+    display = al_create_display(SCREEN_WIDTH, SCREEN_HEIGHT);
     event_queue = al_create_event_queue();
     if (display == nullptr || event_queue == nullptr) {
         show_err_msg(-1);
@@ -121,9 +121,9 @@ void game_begin() {
     al_clear_to_color(al_map_rgb(100, 100, 100));
     // Load and draw text
     font = al_load_ttf_font("font/pirulen.ttf", 30, 0);
-    al_draw_text(font, al_map_rgb(255, 255, 255), WIDTH / 2, HEIGHT / 2 + 220, ALLEGRO_ALIGN_CENTRE,
+    al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 220, ALLEGRO_ALIGN_CENTRE,
                  "Press 'Enter' to start");
-    al_draw_rectangle(WIDTH / 2 - 150, 510, WIDTH / 2 + 150, 550, al_map_rgb(255, 255, 255), 0);
+    al_draw_rectangle(SCREEN_WIDTH / 2 - 150, 510, SCREEN_WIDTH / 2 + 150, 550, al_map_rgb(255, 255, 255), 0);
     al_flip_display();
 }
 
@@ -227,10 +227,10 @@ int game_run() {
             if (judge_next_window) {
                 window = 2;
                 // Setting Character
-                view.backGround = new BackGround(&view, 0, 0, al_load_bitmap("./img/background/stage.jpg"));
-                player = new Player(&view, WIDTH / 2, HEIGHT / 2 + 150, al_load_bitmap("./img/player/playerShip1_blue.png"));
+                view.backGround = new BackGround(&view, 0, 0, al_load_bitmap("./img/background/stars.png"));
+                player = new Player(&view, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 150, al_load_bitmap("./img/player/playerShip1_blue.png"));
                 view.players.push_back(player);
-                view.enemys.push_back(new Enemy(&view, WIDTH / 2, HEIGHT / 2 - 180, al_load_bitmap("./img/enemy/enemyRed3.png")));
+                view.enemys.push_back(new Enemy(&view, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 180, al_load_bitmap("./img/enemy/enemyRed3.png")));
 
                 //Initialize Timer
                 timer = al_create_timer(1.0 / 30.0);

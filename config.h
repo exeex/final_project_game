@@ -6,7 +6,7 @@
 #define FINALPORJECT_CONFIG_H
 
 #define FPS 60
-#define WIDTH 800
-#define HEIGHT 1200
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 1200
 
 #endif //FINALPORJECT_CONFIG_H
