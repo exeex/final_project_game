@@ -167,6 +167,9 @@ int process_event() {
                 player->is_moving_right = 1;
                 break;
 
+
+
+
             case ALLEGRO_KEY_COMMA:
                 player->is_firing = 1;
                 break;

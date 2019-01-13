@@ -16,8 +16,12 @@
 class Bullet : public Object {
 
 public:
+
+    int hp = 10;
+    int damage = 10;
+
     Bullet(View *view, int x, int y, ALLEGRO_BITMAP *bitmap) : Object(view, x, y, bitmap) {
-        y_speed = -1;
+        y_speed = -20;
     }
 
     ~Bullet() override {
@@ -45,7 +49,7 @@ public:
         x_speed += x_acc;
         y_speed += y_acc;
 
-        if (is_out_of_boundary(x, y, w, h)) this->is_garbage = true;
+        if (this->is_out_of_boundary(x, y, w, h)) this->is_garbage = true;
 
     }
 };
@@ -54,12 +58,16 @@ public:
 class BackGround : public Object {
 
 public:
+
     void update_position() override {
         x += x_speed;
         y += y_speed;
     }
 
-    BackGround(View *view, int x, int y, ALLEGRO_BITMAP *image_path) : Object(view, x, y, image_path) {}
+    BackGround(View *view, int x, int y, ALLEGRO_BITMAP *image_path) : Object(view, x, y, image_path) {
+
+        y_speed = 1;
+    }
 
     ~BackGround() override = default;
 };
@@ -73,6 +81,7 @@ public:
     uint8_t is_moving_up = 0;
     uint8_t is_moving_down = 0;
 
+    int hp = 100;
     int x_speed = 5;
     int y_speed = 5;
 
@@ -138,15 +147,15 @@ public:
 
 class Enemy : public Character {
 public:
-
+    int hp = 300;
     bool dir = false;
 
     Enemy(View *view, int x, int y, ALLEGRO_BITMAP *bitmap) : Character(view, x, y, bitmap) {
         this->x = x;
         this->y = y;
-        this->collision_radius = 20.0;
+        this->collision_radius = 45.0;
         this->bitmap = bitmap;
-        x_speed = 0;
+        x_speed = 3;
         y_speed = 0;
     }
 
@@ -159,9 +168,10 @@ public:
     }
 
     void hit(Bullet* b) override{
-//        this->is_garbage = true ;
         printf("hit!");
+        hp -= b->damage;
         b->is_garbage = true ;
+        if(hp<=0) this->is_garbage = true;
     }
 
 
