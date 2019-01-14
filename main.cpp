@@ -283,6 +283,10 @@ int game_run() {
         view.plot();
         al_draw_text(font, al_map_rgb(255, 0, 0), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, ALLEGRO_ALIGN_CENTRE,
                      "GAME OVER");
+        al_draw_text(font, al_map_rgb(255, 0, 0), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 +50, ALLEGRO_ALIGN_CENTRE,
+                     "Restart(R)");
+        al_draw_text(font, al_map_rgb(255, 0, 0), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 100, ALLEGRO_ALIGN_CENTRE,
+                     "End(Esc)");
 //        printf("screen3\n");
         al_flip_display();
 //        al_clear_to_color(al_map_rgb(0, 0, 0));

@@ -32,7 +32,7 @@ void View::plot() {
     plot_count++;
 
 
-    if(plot_count % 100 == 0){
+    if (plot_count % 100 == 0) {
 
         std::list<Object *>::iterator bullet, enemy;
         for (enemy = enemys.begin(); enemy != enemys.end(); enemy++) {
@@ -58,7 +58,6 @@ void View::update_position() {
 }
 
 void View::collect_garbage() {
-    backGround->update_position();
     bullets.remove_if(is_garbage);
     enemy_bullets.remove_if(is_garbage);
     enemys.remove_if(is_garbage);
@@ -82,15 +81,18 @@ void View::check_hit() {
         for (enemy = enemys.begin(); enemy != enemys.end(); enemy++) {
             auto bullet_ = dynamic_cast<Bullet *>(*bullet);
             auto enemy_ = dynamic_cast<Enemy *>(*enemy);
+            if (!bullet_->is_garbage && !enemy_->is_garbage) {
 
-            int dx = enemy_->x - bullet_->x;
-            int dy = enemy_->y - bullet_->y;
-            float er = enemy_->collision_radius;
-            float br = bullet_->collision_radius;
+                int dx = enemy_->x - bullet_->x;
+                int dy = enemy_->y - bullet_->y;
+                float er = enemy_->collision_radius;
+                float br = bullet_->collision_radius;
 
-            double distance = sqrt(pow(dx, 2) + pow(dy, 2));
+                double distance = sqrt(pow(dx, 2) + pow(dy, 2));
 
-            if (distance < er + br)enemy_->hit(bullet_);
+                if (distance < er + br)enemy_->hit(bullet_);
+
+            }
         }
     }
 
@@ -101,14 +103,17 @@ void View::check_hit() {
             auto enemy_bullet_ = dynamic_cast<Bullet *>(*enemy_bullet);
             auto player_ = dynamic_cast<Player *>(*player);
 
-            int dx = player_->x - enemy_bullet_->x;
-            int dy = player_->y - enemy_bullet_->y;
-            float er = player_->collision_radius;
-            float br = enemy_bullet_->collision_radius;
 
-            double distance = sqrt(pow(dx, 2) + pow(dy, 2));
+            if (!enemy_bullet_->is_garbage && !player_->is_garbage) {
+                int dx = player_->x - enemy_bullet_->x;
+                int dy = player_->y - enemy_bullet_->y;
+                float er = player_->collision_radius;
+                float br = enemy_bullet_->collision_radius;
 
-            if (distance < er + br)player_->hit(enemy_bullet_);
+                double distance = sqrt(pow(dx, 2) + pow(dy, 2));
+
+                if (distance < er + br)player_->hit(enemy_bullet_);
+            }
         }
     }
 

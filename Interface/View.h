@@ -23,8 +23,8 @@ public:
     std::list<Object*> enemy_bullets;
 
     int player_hp;
-    int player_score;
-    int player_coin;
+    int player_score =0;
+    int player_coin =0;
 
     void plot();
     void update_position();

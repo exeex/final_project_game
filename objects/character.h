@@ -125,6 +125,7 @@ public:
     int bullet_img_w;
     int bullet_img_h;
     int hp = 100;
+    float fire_speed = 20.0;
     uint8_t is_firing;
     ALLEGRO_TIMER *fire_timer;
 
@@ -137,7 +138,7 @@ public:
         bullet_img_w = al_get_bitmap_width(bullet_img);
         bullet_img_h = al_get_bitmap_height(bullet_img);
         is_firing = 0;
-        fire_timer = al_create_timer(1.0 / 20.0);
+        fire_timer = al_create_timer(1.0 / fire_speed);
         view->player_hp = hp;
     }
 //    void bind_event_queue(ALLEGRO_EVENT_QUEUE* event_queue){
@@ -172,6 +173,8 @@ public:
     ALLEGRO_BITMAP *bullet_img;
     int bullet_img_w;
     int bullet_img_h;
+    int score = 1000;
+    int coin = 100;
 
     Enemy(View *view, int x, int y, ALLEGRO_BITMAP *bitmap) : Character(view, x, y, bitmap) {
 
@@ -209,9 +212,14 @@ public:
         printf("hit!");
         hp -= b->damage;
         b->is_garbage = true ;
-        if(hp<=0) this->is_garbage = true;
+        if(hp<=0) this->defeated();
     }
 
+    void defeated(){
+        this->is_garbage = true;
+        view->player_coin += coin;
+        view->player_score += score;
+    }
 
     ~Enemy() override = default;
 

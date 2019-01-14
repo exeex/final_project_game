@@ -14,6 +14,8 @@
 
 class Hud : public Object {
 
+    ALLEGRO_FONT* font;
+
 public:
     Hud(View * view);
     ~Hud() override = default;
