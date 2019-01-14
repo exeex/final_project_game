@@ -12,13 +12,15 @@
 #include "objects/Hud.h"
 
 #define GAME_TERMINATE -1
+#define GAME_WIN 1
 
 // ALLEGRO Variables
 ALLEGRO_DISPLAY *display = nullptr;
 ALLEGRO_EVENT_QUEUE *event_queue = nullptr;
-ALLEGRO_BITMAP *image = nullptr;
-ALLEGRO_BITMAP *image2 = nullptr;
-ALLEGRO_BITMAP *image3 = nullptr;
+ALLEGRO_BITMAP *image_player = nullptr;
+ALLEGRO_BITMAP *image_enemy1 = nullptr;
+ALLEGRO_BITMAP *image_enemy2 = nullptr;
+ALLEGRO_BITMAP *image_boss = nullptr;
 ALLEGRO_BITMAP *background = nullptr;
 ALLEGRO_KEYBOARD_STATE keyState;
 ALLEGRO_TIMER *timer = nullptr;
@@ -26,6 +28,9 @@ ALLEGRO_TIMER *timer2 = nullptr;
 ALLEGRO_TIMER *timer3 = nullptr;
 ALLEGRO_TIMER *enemy_timer = nullptr;
 ALLEGRO_SAMPLE *song = nullptr;
+ALLEGRO_SAMPLE *song2 = nullptr;
+ALLEGRO_SAMPLE_ID *song_id = nullptr;
+ALLEGRO_SAMPLE_ID *song2_id = nullptr;
 ALLEGRO_FONT *font = nullptr;
 
 //Custom Definition
@@ -34,6 +39,7 @@ const char *title = "Final Project 106065703";
 
 View view;
 Player *player;
+long enemy_count = 0;
 
 
 int window = 1;
@@ -110,6 +116,13 @@ void game_init() {
     // Register event
     al_register_event_source(event_queue, al_get_display_event_source(display));
     al_register_event_source(event_queue, al_get_keyboard_event_source());
+
+    // load image_player
+    image_player = al_load_bitmap("./img/player/playerShip1_blue.png");
+    image_enemy1 = al_load_bitmap("./img/enemy/enemyRed3.png");
+    image_enemy2 = al_load_bitmap("./img/enemy/enemyBlack3.png");
+    image_boss = al_load_bitmap("./img/enemy/ufoRed.png");
+    font = al_load_ttf_font("font/pirulen.ttf", 30, 0);
 }
 
 void game_begin() {
@@ -119,11 +132,15 @@ void game_begin() {
         printf("Audio clip sample not loaded!\n");
         show_err_msg(-1);
     }
+    song2 = al_load_sample("aud/boss.wav");
+    if (!song2) {
+        printf("Audio clip sample not loaded!\n");
+        show_err_msg(-1);
+    }
     // Loop the song until the display closes
-    al_play_sample(song, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, nullptr);
+    al_play_sample(song, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, song_id);
     al_clear_to_color(al_map_rgb(100, 100, 100));
     // Load and draw text
-    font = al_load_ttf_font("font/pirulen.ttf", 30, 0);
     al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 220, ALLEGRO_ALIGN_CENTRE,
                  "Start(Enter)");
     al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 260, ALLEGRO_ALIGN_CENTRE,
@@ -156,8 +173,27 @@ int process_event() {
 
     if (event.timer.source == enemy_timer) {
 
-        view.enemys.push_back(new Enemy(&view, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 180,
-                                        al_load_bitmap("./img/enemy/enemyRed3.png")));
+
+        if (enemy_count < 5) {
+            view.enemys.push_back(new Enemy(&view, -10, SCREEN_HEIGHT / 2 - 180, image_enemy1));
+        } else if (enemy_count < 10) {
+            auto e = new Enemy(&view, -10, SCREEN_HEIGHT / 2 - 180, image_enemy2);
+            view.enemys.push_back(e);
+        } else if (enemy_count == 10) {
+            auto boss = new Enemy(&view, -10, SCREEN_HEIGHT / 2 - 180, image_boss);
+            boss->hp = 2000;
+            view.enemys.push_back(boss);
+//            al_stop_sample(song_id);
+//            al_play_sample(song2, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, song2_id);
+
+        } else{
+            if (view.enemys.size() == 0) {
+                view.win = true;
+            }
+        }
+
+
+        enemy_count++;
     }
 
     // Keyboard
@@ -249,8 +285,7 @@ int game_run() {
                 // Setting Character
                 view.hud = new Hud(&view);
                 view.backGround = new BackGround(&view, 0, 0, al_load_bitmap("./img/background/stars.png"));
-                player = new Player(&view, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 150,
-                                    al_load_bitmap("./img/player/playerShip1_blue.png"));
+                player = new Player(&view, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 150, image_player);
                 view.players.push_back(player);
 
                 //Initialize Timer
@@ -288,6 +323,9 @@ int game_run() {
             window++;
         }
 
+        if (view.win == true) {
+            window = 4;
+        }
 
         // Listening for new event
         if (!al_is_event_queue_empty(event_queue)) {
@@ -301,6 +339,22 @@ int game_run() {
                      "Restart(R)");
         al_draw_text(font, al_map_rgb(255, 0, 0), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 100, ALLEGRO_ALIGN_CENTRE,
                      "End(Esc)");
+//        printf("screen3\n");
+        al_flip_display();
+//        al_clear_to_color(al_map_rgb(0, 0, 0));`
+
+        // Listening for new event
+
+
+
+        // Listening for new event
+        if (!al_is_event_queue_empty(event_queue)) {
+            error = process_event();
+        }
+    } else if (window == 4) {
+        view.plot();
+        al_draw_text(font, al_map_rgb(255, 0, 0), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, ALLEGRO_ALIGN_CENTRE,
+                     "WIN");
 //        printf("screen3\n");
         al_flip_display();
 //        al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -337,6 +391,8 @@ void game_destroy() {
     al_destroy_display(display);
     al_destroy_timer(timer);
     al_destroy_timer(timer2);
-    al_destroy_bitmap(image);
+    al_destroy_bitmap(image_player);
+    al_destroy_bitmap(image_enemy1);
+    al_destroy_bitmap(image_enemy2);
     al_destroy_sample(song);
 }

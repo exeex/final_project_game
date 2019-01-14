@@ -25,8 +25,9 @@ public:
     int player_score =0;
     int player_coin =0;
     int player_level=0;
-
     long plot_count =0;
+
+    bool win = false;
 
     void plot();
     void update_position();
@@ -34,6 +35,7 @@ public:
     void add_bullet(Object* bullet);
     void add_enemy_bullets(Object* bullet);
     void check_hit();
+
 
 };
 

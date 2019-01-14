@@ -25,6 +25,7 @@ public:
     }
 
     ~Bullet() override {
+//        al_destroy_bitmap(bitmap);
 //        fprintf(stdout, "unexpected msg: gg!! \n");
     }
 
