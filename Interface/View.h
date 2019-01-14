@@ -20,6 +20,7 @@ public:
     std::list<Object*> players;
     std::list<Object*> enemys;
     std::list<Object*> bullets;
+    std::list<Object*> enemy_bullets;
 
     int player_hp;
     int player_score;
@@ -29,6 +30,7 @@ public:
     void update_position();
     void collect_garbage();
     void add_bullet(Object* bullet);
+    void add_enemy_bullets(Object* bullet);
     void check_hit();
 
 };

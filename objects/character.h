@@ -132,6 +132,7 @@ public:
         this->x = x;
         this->y = y;
         this->bitmap = bitmap;
+        this->collision_radius = 45.0;
         bullet_img = al_load_bitmap("img/bullet/laserBlue01.png");
         bullet_img_w = al_get_bitmap_width(bullet_img);
         bullet_img_h = al_get_bitmap_height(bullet_img);
@@ -157,6 +158,7 @@ public:
         printf("hit!");
         hp -= b->damage;
         b->is_garbage = true ;
+        view->player_hp = hp;
         if(hp<=0) this->is_garbage = true;
     }
 
@@ -167,14 +169,24 @@ class Enemy : public Character {
 public:
     int hp = 300;
     bool dir = false;
+    ALLEGRO_BITMAP *bullet_img;
+    int bullet_img_w;
+    int bullet_img_h;
 
     Enemy(View *view, int x, int y, ALLEGRO_BITMAP *bitmap) : Character(view, x, y, bitmap) {
+
+
+
         this->x = x;
         this->y = y;
         this->collision_radius = 45.0;
         this->bitmap = bitmap;
         x_speed = 3;
         y_speed = 0;
+
+        bullet_img = al_load_bitmap("img/bullet/bullet.png");
+        bullet_img_w = al_get_bitmap_width(bullet_img);
+        bullet_img_h = al_get_bitmap_height(bullet_img);
     }
 
     void update_position() override {
@@ -183,6 +195,14 @@ public:
         if (dir) x -= x_speed;
         else x += x_speed;
 
+    }
+
+    void fire() {
+        int fire_pos_x = x;
+        int fire_pos_y = y - bullet_img_h / 2;
+        auto b = new Bullet(this->view, fire_pos_x, fire_pos_y, bullet_img);
+        b->y_speed = 5;
+        view->add_enemy_bullets(b);
     }
 
     void hit(Bullet* b) override{

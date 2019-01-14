@@ -23,12 +23,26 @@ void View::plot() {
     backGround->plot();
     std::list<Object *>::iterator it;
     for (it = bullets.begin(); it != bullets.end(); it++) (*it)->plot();
+    for (it = enemy_bullets.begin(); it != enemy_bullets.end(); it++) (*it)->plot();
     for (it = enemys.begin(); it != enemys.end(); it++) (*it)->plot();
     for (it = players.begin(); it != players.end(); it++) (*it)->plot();
     hud->plot();
 
 
     plot_count++;
+
+
+    if(plot_count % 100 == 0){
+
+        std::list<Object *>::iterator bullet, enemy;
+        for (enemy = enemys.begin(); enemy != enemys.end(); enemy++) {
+            auto enemy_ = dynamic_cast<Enemy *>(*enemy);
+
+            enemy_->fire();
+        }
+    }
+
+
 }
 
 void View::update_position() {
@@ -36,6 +50,7 @@ void View::update_position() {
 
     std::list<Object *>::iterator it;
     for (it = bullets.begin(); it != bullets.end(); it++) (*it)->update_position();
+    for (it = enemy_bullets.begin(); it != enemy_bullets.end(); it++) (*it)->update_position();
     for (it = enemys.begin(); it != enemys.end(); it++) (*it)->update_position();
     for (it = players.begin(); it != players.end(); it++) (*it)->update_position();
 
@@ -45,6 +60,7 @@ void View::update_position() {
 void View::collect_garbage() {
     backGround->update_position();
     bullets.remove_if(is_garbage);
+    enemy_bullets.remove_if(is_garbage);
     enemys.remove_if(is_garbage);
     players.remove_if(is_garbage);
 
@@ -53,6 +69,11 @@ void View::collect_garbage() {
 void View::add_bullet(Object *bullet) {
     bullets.push_back(bullet);
 }
+
+void View::add_enemy_bullets(Object *bullet) {
+    enemy_bullets.push_back(bullet);
+}
+
 
 void View::check_hit() {
 
@@ -70,6 +91,24 @@ void View::check_hit() {
             double distance = sqrt(pow(dx, 2) + pow(dy, 2));
 
             if (distance < er + br)enemy_->hit(bullet_);
+        }
+    }
+
+
+    std::list<Object *>::iterator enemy_bullet, player;
+    for (enemy_bullet = enemy_bullets.begin(); enemy_bullet != enemy_bullets.end(); enemy_bullet++) {
+        for (player = players.begin(); player != players.end(); player++) {
+            auto enemy_bullet_ = dynamic_cast<Bullet *>(*enemy_bullet);
+            auto player_ = dynamic_cast<Player *>(*player);
+
+            int dx = player_->x - enemy_bullet_->x;
+            int dy = player_->y - enemy_bullet_->y;
+            float er = player_->collision_radius;
+            float br = enemy_bullet_->collision_radius;
+
+            double distance = sqrt(pow(dx, 2) + pow(dy, 2));
+
+            if (distance < er + br)player_->hit(enemy_bullet_);
         }
     }
 

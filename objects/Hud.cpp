@@ -17,7 +17,7 @@ void Hud::plot() {
 
     auto str = "HP : " + std::to_string(view->player_hp);
 
-    al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_WIDTH, SCREEN_HEIGHT - 50, ALLEGRO_ALIGN_CENTRE, str.c_str());
+    al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_WIDTH - 200, SCREEN_HEIGHT - 50, ALLEGRO_ALIGN_CENTRE, str.c_str());
 
 
 }
