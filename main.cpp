@@ -9,6 +9,7 @@
 #include "objects/character.h"
 #include "Interface/View.h"
 #include "config.h"
+#include "objects/Hud.h"
 
 #define GAME_TERMINATE -1
 
@@ -122,7 +123,11 @@ void game_begin() {
     // Load and draw text
     font = al_load_ttf_font("font/pirulen.ttf", 30, 0);
     al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 220, ALLEGRO_ALIGN_CENTRE,
-                 "Press 'Enter' to start");
+                 "Start(Enter)");
+    al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 260, ALLEGRO_ALIGN_CENTRE,
+                 "About(F1)");
+    al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 300, ALLEGRO_ALIGN_CENTRE,
+                 "Exit(Esc)");
     al_draw_rectangle(SCREEN_WIDTH / 2 - 150, 510, SCREEN_WIDTH / 2 + 150, 550, al_map_rgb(255, 255, 255), 0);
     al_flip_display();
 }
@@ -166,8 +171,6 @@ int process_event() {
             case ALLEGRO_KEY_D:
                 player->is_moving_right = 1;
                 break;
-
-
 
 
             case ALLEGRO_KEY_COMMA:
@@ -227,6 +230,7 @@ int game_run() {
             if (judge_next_window) {
                 window = 2;
                 // Setting Character
+                view.hud = new Hud(&view);
                 view.backGround = new BackGround(&view, 0, 0, al_load_bitmap("./img/background/stars.png"));
                 player = new Player(&view, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 150, al_load_bitmap("./img/player/playerShip1_blue.png"));
                 view.players.push_back(player);
@@ -254,12 +258,33 @@ int game_run() {
         view.plot();
 
         al_flip_display();
-        al_clear_to_color(al_map_rgb(0, 0, 0));
+//        al_clear_to_color(al_map_rgb(0, 0, 0));
+
+        // GAME OVER
+        if(view.player_hp <= 0){
+            window++;
+        }
+
 
         // Listening for new event
         if (!al_is_event_queue_empty(event_queue)) {
             error = process_event();
         }
+    }    else if (window == 3) {
+        view.plot();
+        al_flip_display();
+        al_clear_to_color(al_map_rgb(0, 0, 0));
+
+        // Listening for new event
+
+        al_draw_text(font, al_map_rgb(255, 0, 0), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, ALLEGRO_ALIGN_CENTRE,
+                     "GAME OVER");
+
+        // Listening for new event
+        if (!al_is_event_queue_empty(event_queue)) {
+            error = process_event();
+        }
+
     }
     return error;
 }

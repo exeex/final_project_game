@@ -12,10 +12,10 @@ class Object {
 
 public:
     View* view;
-    int x;
-    int y;
-    int w;
-    int h;
+    int x = 0;
+    int y = 0;
+    int w = 0;
+    int h = 0;
     int x_speed = 0;
     int y_speed = 0;
     int x_acc = 0;

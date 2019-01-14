@@ -11,12 +11,19 @@
 class Object;
 
 class View{
+private:
+    long plot_count =0;
 
 public:
     Object* backGround;
+    Object* hud;
     std::list<Object*> players;
     std::list<Object*> enemys;
     std::list<Object*> bullets;
+
+    int player_hp;
+    int player_score;
+    int player_coin;
 
     void plot();
     void update_position();

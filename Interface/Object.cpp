@@ -9,8 +9,13 @@
 Object::Object(View *view, int x, int y, ALLEGRO_BITMAP *bitmap) {
     this->x = x;
     this->y = y;
-    w = al_get_bitmap_width(bitmap);
-    h = al_get_bitmap_height(bitmap);
+    if(bitmap){
+        w = al_get_bitmap_width(bitmap);
+        h = al_get_bitmap_height(bitmap);
+    } else{
+        this->w=0;
+        this->h=0;
+    }
     this->bitmap = bitmap;
     this->view = view;
 }

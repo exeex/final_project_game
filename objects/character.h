@@ -124,6 +124,7 @@ public:
     ALLEGRO_BITMAP *bullet_img;
     int bullet_img_w;
     int bullet_img_h;
+    int hp = 100;
     uint8_t is_firing;
     ALLEGRO_TIMER *fire_timer;
 
@@ -136,6 +137,7 @@ public:
         bullet_img_h = al_get_bitmap_height(bullet_img);
         is_firing = 0;
         fire_timer = al_create_timer(1.0 / 20.0);
+        view->player_hp = hp;
     }
 //    void bind_event_queue(ALLEGRO_EVENT_QUEUE* event_queue){
 //        al_register_event_source(event_queue, al_get_timer_event_source(fire_timer));
@@ -149,6 +151,13 @@ public:
 
         auto b = new Bullet(this->view, fire_pos_x, fire_pos_y, bullet_img);
         view->add_bullet(b);
+    }
+
+    void hit(Bullet* b) override{
+        printf("hit!");
+        hp -= b->damage;
+        b->is_garbage = true ;
+        if(hp<=0) this->is_garbage = true;
     }
 
 
