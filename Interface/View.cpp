@@ -62,7 +62,7 @@ void View::collect_garbage() {
     bullets.remove_if(is_garbage);
     enemy_bullets.remove_if(is_garbage);
     enemys.remove_if(is_garbage);
-    players.remove_if(is_garbage);
+//    players.remove_if(is_garbage);
 
 }
 

@@ -37,6 +37,7 @@ Player *player;
 
 int window = 1;
 bool judge_next_window = false;
+bool show_info = false;
 
 void show_err_msg(int msg);
 
@@ -142,11 +143,11 @@ int process_event() {
         view.update_position();
     }
 
-    if ( event.timer.source == timer2 && player->is_firing == 1) {
+    if (event.timer.source == timer2 && player->is_firing == 1) {
         player->fire();
     }
 
-    if ( event.timer.source == timer3) {
+    if (event.timer.source == timer3) {
         view.check_hit();
         view.collect_garbage();
     }
@@ -176,11 +177,15 @@ int process_event() {
             case ALLEGRO_KEY_COMMA:
                 player->is_firing = 1;
                 break;
+            case ALLEGRO_KEY_ESCAPE:
+                return GAME_TERMINATE;
 
                 // For Start Menu
             case ALLEGRO_KEY_ENTER:
                 judge_next_window = true;
                 break;
+            case ALLEGRO_KEY_F1:
+                show_info = true;
             default:
                 break;
         }
@@ -227,14 +232,17 @@ int game_run() {
     if (window == 1) {
         if (!al_is_event_queue_empty(event_queue)) {
             error = process_event();
+            if (show_info) window = 8;
             if (judge_next_window) {
                 window = 2;
                 // Setting Character
                 view.hud = new Hud(&view);
                 view.backGround = new BackGround(&view, 0, 0, al_load_bitmap("./img/background/stars.png"));
-                player = new Player(&view, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 150, al_load_bitmap("./img/player/playerShip1_blue.png"));
+                player = new Player(&view, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 150,
+                                    al_load_bitmap("./img/player/playerShip1_blue.png"));
                 view.players.push_back(player);
-                view.enemys.push_back(new Enemy(&view, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 180, al_load_bitmap("./img/enemy/enemyRed3.png")));
+                view.enemys.push_back(new Enemy(&view, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 180,
+                                                al_load_bitmap("./img/enemy/enemyRed3.png")));
 
                 //Initialize Timer
                 timer = al_create_timer(1.0 / 30.0);
@@ -248,6 +256,7 @@ int game_run() {
                 al_start_timer(timer);
                 al_start_timer(timer2);
                 al_start_timer(timer3);
+                judge_next_window = false;
             }
         }
     }
@@ -261,7 +270,7 @@ int game_run() {
 //        al_clear_to_color(al_map_rgb(0, 0, 0));
 
         // GAME OVER
-        if(view.player_hp <= 0){
+        if (view.player_hp <= 0) {
             window++;
         }
 
@@ -270,17 +279,34 @@ int game_run() {
         if (!al_is_event_queue_empty(event_queue)) {
             error = process_event();
         }
-    }    else if (window == 3) {
+    } else if (window == 3) {
         view.plot();
-        al_flip_display();
-        al_clear_to_color(al_map_rgb(0, 0, 0));
-
-        // Listening for new event
-
         al_draw_text(font, al_map_rgb(255, 0, 0), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, ALLEGRO_ALIGN_CENTRE,
                      "GAME OVER");
+//        printf("screen3\n");
+        al_flip_display();
+//        al_clear_to_color(al_map_rgb(0, 0, 0));
 
         // Listening for new event
+
+
+
+        // Listening for new event
+        if (!al_is_event_queue_empty(event_queue)) {
+            error = process_event();
+        }
+
+    }
+
+    else if (window == 8) {
+        al_clear_to_color(al_map_rgb(0, 0, 0));
+        al_draw_text(font, al_map_rgb(255, 0, 0), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, ALLEGRO_ALIGN_CENTRE,
+                     "Author : cswu\n xray0h@gmail.com");
+
+        al_draw_text(font, al_map_rgb(255, 0, 0), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50, ALLEGRO_ALIGN_CENTRE,
+                     "https://github.com/exeex/final_project_game");
+        al_flip_display();
+
         if (!al_is_event_queue_empty(event_queue)) {
             error = process_event();
         }
