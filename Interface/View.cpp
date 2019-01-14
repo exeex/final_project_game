@@ -30,17 +30,8 @@ void View::plot() {
 
 
     plot_count++;
+    if(plot_count>10000000) plot_count=0;
 
-
-    if (plot_count % 100 == 0) {
-
-        std::list<Object *>::iterator bullet, enemy;
-        for (enemy = enemys.begin(); enemy != enemys.end(); enemy++) {
-            auto enemy_ = dynamic_cast<Enemy *>(*enemy);
-
-            enemy_->fire();
-        }
-    }
 
 
 }

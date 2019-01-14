@@ -24,6 +24,7 @@ ALLEGRO_KEYBOARD_STATE keyState;
 ALLEGRO_TIMER *timer = nullptr;
 ALLEGRO_TIMER *timer2 = nullptr;
 ALLEGRO_TIMER *timer3 = nullptr;
+ALLEGRO_TIMER *enemy_timer = nullptr;
 ALLEGRO_SAMPLE *song = nullptr;
 ALLEGRO_FONT *font = nullptr;
 
@@ -143,6 +144,7 @@ int process_event() {
         view.update_position();
     }
 
+
     if (event.timer.source == timer2 && player->is_firing == 1) {
         player->fire();
     }
@@ -150,6 +152,12 @@ int process_event() {
     if (event.timer.source == timer3) {
         view.check_hit();
         view.collect_garbage();
+    }
+
+    if (event.timer.source == enemy_timer) {
+
+        view.enemys.push_back(new Enemy(&view, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 180,
+                                        al_load_bitmap("./img/enemy/enemyRed3.png")));
     }
 
     // Keyboard
@@ -244,21 +252,24 @@ int game_run() {
                 player = new Player(&view, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 150,
                                     al_load_bitmap("./img/player/playerShip1_blue.png"));
                 view.players.push_back(player);
-                view.enemys.push_back(new Enemy(&view, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 180,
-                                                al_load_bitmap("./img/enemy/enemyRed3.png")));
 
                 //Initialize Timer
                 timer = al_create_timer(1.0 / 30.0);
                 timer2 = player->fire_timer;
                 timer3 = al_create_timer(1.0 / 10.0);
+                enemy_timer = al_create_timer(3);
+
 
                 al_register_event_source(event_queue, al_get_timer_event_source(timer));
                 al_register_event_source(event_queue, al_get_timer_event_source(timer2));
                 al_register_event_source(event_queue, al_get_timer_event_source(timer3));
+                al_register_event_source(event_queue, al_get_timer_event_source(enemy_timer));
 
                 al_start_timer(timer);
                 al_start_timer(timer2);
                 al_start_timer(timer3);
+                al_start_timer(enemy_timer);
+
                 judge_next_window = false;
             }
         }
@@ -286,7 +297,7 @@ int game_run() {
         view.plot();
         al_draw_text(font, al_map_rgb(255, 0, 0), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, ALLEGRO_ALIGN_CENTRE,
                      "GAME OVER");
-        al_draw_text(font, al_map_rgb(255, 0, 0), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 +50, ALLEGRO_ALIGN_CENTRE,
+        al_draw_text(font, al_map_rgb(255, 0, 0), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50, ALLEGRO_ALIGN_CENTRE,
                      "Restart(R)");
         al_draw_text(font, al_map_rgb(255, 0, 0), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 100, ALLEGRO_ALIGN_CENTRE,
                      "End(Esc)");
@@ -303,9 +314,7 @@ int game_run() {
             error = process_event();
         }
 
-    }
-
-    else if (window == 8) {
+    } else if (window == 8) {
         al_clear_to_color(al_map_rgb(0, 0, 0));
         al_draw_text(font, al_map_rgb(255, 0, 0), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, ALLEGRO_ALIGN_CENTRE,
                      "Author : cswu\n xray0h@gmail.com");

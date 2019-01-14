@@ -12,7 +12,6 @@ class Object;
 
 class View{
 private:
-    long plot_count =0;
 
 public:
     Object* backGround;
@@ -26,6 +25,8 @@ public:
     int player_score =0;
     int player_coin =0;
     int player_level=0;
+
+    long plot_count =0;
 
     void plot();
     void update_position();

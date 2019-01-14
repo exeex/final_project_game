@@ -222,8 +222,6 @@ public:
 
     Enemy(View *view, int x, int y, ALLEGRO_BITMAP *bitmap) : Character(view, x, y, bitmap) {
 
-
-
         this->x = x;
         this->y = y;
         this->collision_radius = 45.0;
@@ -241,6 +239,7 @@ public:
         else if (x > SCREEN_WIDTH + 50) dir = true;
         if (dir) x -= x_speed;
         else x += x_speed;
+        if(view->plot_count % 60==0) fire();
 
     }
 
