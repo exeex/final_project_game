@@ -26,6 +26,12 @@ void Hud::plot() {
 
     al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_WIDTH - 200, SCREEN_HEIGHT - 130, ALLEGRO_ALIGN_CENTRE, str3.c_str());
 
+
+    auto str4 = "player_lv : " + std::to_string(view->player_level);
+
+    al_draw_text(font, al_map_rgb(255, 255, 255), 200, SCREEN_HEIGHT - 50, ALLEGRO_ALIGN_CENTRE, str4.c_str());
+
+
 }
 
 

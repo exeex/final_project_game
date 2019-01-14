@@ -125,7 +125,10 @@ public:
     int bullet_img_w;
     int bullet_img_h;
     int hp = 100;
+    int upgrade_cost =50;
+    int level =0;
     float fire_speed = 20.0;
+    uint64_t fire_count =0;
     uint8_t is_firing;
     ALLEGRO_TIMER *fire_timer;
 
@@ -147,13 +150,53 @@ public:
 
     ~Player() override = default;
 
+    void upgrade(){
+        if(view->player_coin >= upgrade_cost){
+            view->player_coin -= upgrade_cost;
+            level++;
+            this->x_speed+=1;
+            this->y_speed+=1;
+            view->player_level = level;
+
+        } else{
+            printf("insufficient coin!\n");
+        }
+    }
+
     void fire() {
         int fire_pos_x = x;
         int fire_pos_y = y - bullet_img_h / 2;
 
         auto b = new Bullet(this->view, fire_pos_x, fire_pos_y, bullet_img);
         view->add_bullet(b);
+
+        if(level>=1 && fire_count%3 ==0){
+            auto b2 = new Bullet(this->view, fire_pos_x, fire_pos_y, bullet_img);
+            auto b3 = new Bullet(this->view, fire_pos_x, fire_pos_y, bullet_img);
+            b2->x_speed = 2;
+            b3->x_speed = -2;
+            view->add_bullet(b2);
+            view->add_bullet(b3);
+        }
+
+        if(level>=2 && fire_count%2 ==0){
+            auto b2 = new Bullet(this->view, fire_pos_x, fire_pos_y, bullet_img);
+            auto b3 = new Bullet(this->view, fire_pos_x, fire_pos_y, bullet_img);
+            b2->x_speed = 2;
+            b3->x_speed = -2;
+            view->add_bullet(b2);
+            view->add_bullet(b3);
+        }
+
+        fire_count++;
+
+        if(fire_count>10000){
+            fire_count =0;
+        }
+
+
     }
+
 
     void hit(Bullet* b) override{
         printf("hit!");
@@ -162,6 +205,7 @@ public:
         view->player_hp = hp;
         if(hp<=0) this->is_garbage = true;
     }
+
 
 
 };

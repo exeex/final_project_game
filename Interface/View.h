@@ -25,6 +25,7 @@ public:
     int player_hp;
     int player_score =0;
     int player_coin =0;
+    int player_level=0;
 
     void plot();
     void update_position();
